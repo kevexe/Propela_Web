@@ -1,6 +1,60 @@
 @import "tailwindcss";
 
 @layer utilities {
+  .glass-input {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.masonry-grid {
+  column-count: 1;
+  column-gap: 32px;
+}
+@media (min-width: 768px) {
+  .masonry-grid { column-count: 2; }
+}
+@media (min-width: 1024px) {
+  .masonry-grid { column-count: 3; }
+}
+@media (min-width: 1280px) {
+  .masonry-grid { column-count: 4; }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 32px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+  .chat-bubble-expert {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom-left-radius: 4px;
+}
+.chat-bubble-user {
+  background: linear-gradient(135deg, #FF8C33 0%, #FF6B00 100%);
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
   .glass-panel {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);

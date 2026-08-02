@@ -1,6 +1,16 @@
-import React from 'react';
+import Buscar from './Buscar';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import AuthScreen from './AuthScreen';
+import PropelaInicio from './PropelaInicio';
+import React, { useState } from 'react';
+import Sidebar from './Sidebar';
+import MapSearch from './MapSearch';
+import { ChatProvider } from './ChatContext';
+import Messages from './Messages';
+function LandingPage() {
+  // Inicializamos la función para poder navegar
+  const navigate = useNavigate(); 
 
-export default function App() {
   return (
     <div className="relative text-[#191c1e] min-h-screen">
       <div className="noise-overlay"></div>
@@ -20,7 +30,11 @@ export default function App() {
             <a className="text-[#5a4136] hover:text-[#a04100] transition-colors text-sm font-medium" href="#descargar">Descargar</a>
             <a className="text-[#5a4136] hover:text-[#a04100] transition-colors text-sm font-medium" href="#web">Propela Web</a>
           </div>
-          <button className="bg-[#ff6b00] text-white font-semibold text-xs px-6 py-2 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95">
+          {/* Le agregamos la navegación también al botón de registrarse de arriba */}
+          <button 
+            onClick={() => navigate('/auth')} 
+            className="bg-[#ff6b00] text-white font-semibold text-xs px-6 py-2 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95"
+          >
             Registrarse
           </button>
         </div>
@@ -44,7 +58,12 @@ export default function App() {
                 <span className="material-symbols-outlined group-hover:-translate-y-1 transition-transform">phone_iphone</span>
                 Descargar App
               </button>
-              <button className="glass-panel text-[#191c1e] font-semibold px-8 py-4 rounded-full hover:bg-[#e0e3e5] transition-all flex items-center justify-center gap-2">
+              
+              {/* Botón hacia Propela Web */}
+              <button 
+                onClick={() => navigate('/auth')} 
+                className="glass-panel text-[#191c1e] font-semibold px-8 py-4 rounded-full hover:bg-[#e0e3e5] transition-all flex items-center justify-center gap-2"
+              >
                 <span className="material-symbols-outlined text-[#4D8DFF]">laptop_mac</span>
                 Usar Propela Web
               </button>
@@ -196,5 +215,68 @@ export default function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  
+  // Aquí definimos dónde NO queremos que aparezca el Sidebar
+  // Ojo: cambié '/login' por '/auth' porque vi que así lo tienes en tu botón
+  const rutasSinSidebar = ['/', '/auth']; 
+  const mostrarSidebar = !rutasSinSidebar.includes(location.pathname);
+
+  return (
+    <div className="flex w-screen h-screen overflow-hidden bg-background">
+      {/* El Sidebar solo se renderiza si la ruta no está en la lista de arriba */}
+      {mostrarSidebar && <Sidebar />}
+      
+      {/* Contenedor principal de las vistas */}
+      <div className="flex-1 h-full overflow-y-auto">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthScreen />} />
+          <Route path="/inicio" element={<PropelaInicio />} />
+          <Route path="/mapa" element={<MapSearch />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+
+function MainLayout() {
+  const [activeView, setActiveView] = useState('home');
+
+  return (
+    <ChatProvider>
+      <div className="bg-background text-on-background h-screen overflow-hidden font-body-md relative flex">
+        <Sidebar activeView={activeView} setActiveView={setActiveView} />
+
+        <div className="flex-1 h-full overflow-y-auto">
+          <Routes>
+            <Route path="/inicio" element={<PropelaInicio />} />
+            <Route path="/mapa" element={<MapSearch />} />
+            <Route path="/mensajes" element={<Messages />} />
+          <Route path="/buscar" element={<Buscar />} />
+          </Routes>
+        </div>
+      </div>
+    </ChatProvider>
+  );
+}
+// Configuración principal de las rutas
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Páginas Públicas (Sin Sidebar) */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<AuthScreen />} />
+
+        {/* Páginas Internas (Con Sidebar) */}
+        <Route path="/*" element={<MainLayout />} />
+      </Routes>
+    </Router>
   );
 }

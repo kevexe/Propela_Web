@@ -1,14 +1,28 @@
-import Buscar from './Buscar';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import AuthScreen from './AuthScreen';
-import PropelaInicio from './PropelaInicio';
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
-import MapSearch from './MapSearch';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+
+// 1. Contextos
 import { ChatProvider } from './ChatContext';
-import Messages from './Messages';
+
+// 2. Componentes Web
+import Sidebar from './components/Sidebar';
+
+// 3. Páginas Web
+import AuthScreen from './pages/AuthScreen';
+import PropelaInicio from './pages/PropelaInicio';
+import MapSearch from './pages/MapSearch';
+import Messages from './pages/Messages';
+import Buscar from './pages/Buscar';
+import PropelaContainer from './pages/PropelaContainer';
+
+// 4. Páginas Móviles
+import PropelaInicioMobile from './pages/PropelaInicioMobile';
+import BuscarView from './pages/BuscarView';
+import MapaView from './pages/MapaView';
+import MensajesView from './pages/MensajesView';
+import PerfilView from './pages/PerfilView';
+
 function LandingPage() {
-  // Inicializamos la función para poder navegar
   const navigate = useNavigate(); 
 
   return (
@@ -30,7 +44,6 @@ function LandingPage() {
             <a className="text-[#5a4136] hover:text-[#a04100] transition-colors text-sm font-medium" href="#descargar">Descargar</a>
             <a className="text-[#5a4136] hover:text-[#a04100] transition-colors text-sm font-medium" href="#web">Propela Web</a>
           </div>
-          {/* Le agregamos la navegación también al botón de registrarse de arriba */}
           <button 
             onClick={() => navigate('/auth')} 
             className="bg-[#ff6b00] text-white font-semibold text-xs px-6 py-2 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95"
@@ -59,7 +72,6 @@ function LandingPage() {
                 Descargar App
               </button>
               
-              {/* Botón hacia Propela Web */}
               <button 
                 onClick={() => navigate('/auth')} 
                 className="glass-panel text-[#191c1e] font-semibold px-8 py-4 rounded-full hover:bg-[#e0e3e5] transition-all flex items-center justify-center gap-2"
@@ -78,7 +90,6 @@ function LandingPage() {
               src="https://lh3.googleusercontent.com/aida/AP1WRLtgqiGIxMUj87J_OIO7B-a1Pu_5Psx5dmALIr5Ab8KJPn-EJtIFR9sQB6GKEHxWoI2TeybdbKGABrh0HsouMo9mf6X2PkomNhzQVkoxX9njr-EIU8Xr_y-qnF3RR-iArYisPzqU2lF7MscMIr8xqr4QuqfPf4CcTbxqljQ17YsvJxtqv1WpDM0ap0UhcFAuLElJ4EqtDQWJDJouxzuLEmFzj2Wn_ugmUvkHW2wKRd4iduhIg2OtLYx0Yzs" 
             />
 
-            {/* Floating Cards */}
             <div className="absolute top-10 right-0 glass-card p-4 rounded-2xl flex items-center gap-3 floating-element-delay z-30">
               <div className="bg-[#FF6B00]/20 p-2 rounded-full text-[#FF6B00]">
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>plumbing</span>
@@ -151,7 +162,6 @@ function LandingPage() {
           <div className="relative max-w-4xl mx-auto">
             <div className="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[#FF6B00]/50 via-[#4D8DFF]/50 to-transparent -translate-x-1/2 rounded-full"></div>
 
-            {/* Step 1 */}
             <div className="flex flex-col md:flex-row items-center gap-8 mb-12 relative z-10">
               <div className="md:w-1/2 flex justify-end pl-12 md:pl-0 md:pr-12 text-left md:text-right">
                 <div className="glass-card p-6 rounded-3xl w-full">
@@ -165,7 +175,6 @@ function LandingPage() {
               <div className="md:w-1/2 hidden md:block"></div>
             </div>
 
-            {/* Step 2 */}
             <div className="flex flex-col md:flex-row-reverse items-center gap-8 mb-12 relative z-10">
               <div className="md:w-1/2 flex justify-start pl-12 text-left">
                 <div className="glass-card p-6 rounded-3xl w-full">
@@ -179,7 +188,6 @@ function LandingPage() {
               <div className="md:w-1/2 hidden md:block"></div>
             </div>
 
-            {/* Step 3 */}
             <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
               <div className="md:w-1/2 flex justify-end pl-12 md:pl-0 md:pr-12 text-left md:text-right">
                 <div className="glass-card p-6 rounded-3xl w-full bg-gradient-to-br from-[#FF6B00]/10 to-[#4D8DFF]/10">
@@ -218,63 +226,61 @@ function LandingPage() {
   );
 }
 
-function AppContent() {
-  const location = useLocation();
-  
-  // Aquí definimos dónde NO queremos que aparezca el Sidebar
-  // Ojo: cambié '/login' por '/auth' porque vi que así lo tienes en tu botón
-  const rutasSinSidebar = ['/', '/auth']; 
-  const mostrarSidebar = !rutasSinSidebar.includes(location.pathname);
-
-  return (
-    <div className="flex w-screen h-screen overflow-hidden bg-background">
-      {/* El Sidebar solo se renderiza si la ruta no está en la lista de arriba */}
-      {mostrarSidebar && <Sidebar />}
-      
-      {/* Contenedor principal de las vistas */}
-      <div className="flex-1 h-full overflow-y-auto">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/auth" element={<AuthScreen />} />
-          <Route path="/inicio" element={<PropelaInicio />} />
-          <Route path="/mapa" element={<MapSearch />} />
-        </Routes>
-      </div>
-    </div>
-  );
-}
-
-
 function MainLayout() {
   const [activeView, setActiveView] = useState('home');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <ChatProvider>
       <div className="bg-background text-on-background h-screen overflow-hidden font-body-md relative flex">
-        <Sidebar activeView={activeView} setActiveView={setActiveView} />
+        
+        {/* VISTA ESCRITORIO (WEB) */}
+        {!isMobile && (
+          <div className="flex w-full h-full">
+            <Sidebar activeView={activeView} setActiveView={setActiveView} />
+            <div className="flex-1 h-full overflow-y-auto relative">
+              <Routes>
+                <Route path="/inicio" element={<PropelaContainer />} />
+                <Route path="/buscar" element={<Buscar />} />
+                <Route path="/mapa" element={<MapSearch />} />
+                <Route path="/mensajes" element={<Messages />} />
+                <Route path="/trabajos" element={<PropelaContainer />} /> 
+                <Route path="/perfil" element={<PropelaContainer />} />   
+              </Routes>
+            </div>
+          </div>
+        )}
 
-        <div className="flex-1 h-full overflow-y-auto">
-          <Routes>
-            <Route path="/inicio" element={<PropelaInicio />} />
-            <Route path="/mapa" element={<MapSearch />} />
-            <Route path="/mensajes" element={<Messages />} />
-          <Route path="/buscar" element={<Buscar />} />
-          </Routes>
-        </div>
+        {/* VISTA MÓVIL */}
+        {isMobile && (
+          <div className="w-full h-full overflow-y-auto relative">
+            <Routes>
+              <Route path="/inicio" element={<PropelaInicioMobile />} />
+              <Route path="/buscar" element={<BuscarView />} />
+              <Route path="/mapa" element={<MapaView />} />
+              <Route path="/mensajes" element={<MensajesView />} />
+              <Route path="/perfil" element={<PerfilView />} />
+            </Routes>
+          </div>
+        )}
+
       </div>
     </ChatProvider>
   );
 }
-// Configuración principal de las rutas
+
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Páginas Públicas (Sin Sidebar) */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthScreen />} />
-
-        {/* Páginas Internas (Con Sidebar) */}
         <Route path="/*" element={<MainLayout />} />
       </Routes>
     </Router>

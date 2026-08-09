@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Propela - Expert Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+        .glass-high-gloss {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        .diamond-dock {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .diamond-dock::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%);
+            pointer-events: none;
+        }
+        /* Faceted glass refraction simulation */
+        .facet {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), transparent);
+            pointer-events: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .map-silver {
+            filter: grayscale(100%) brightness(1.05) contrast(0.9);
+        }
+        .glow-orange {
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+        }
+        .gem-center {
+            background: radial-gradient(circle at 30% 30%, #ff8c33, #ff6b00 70%, #cc5600);
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.6), inset 0 0 10px rgba(255,255,255,0.5);
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#ff6b00",
+                        "on-surface": "#121c2a",
+                        "secondary": "#555f70",
+                        "background": "#f8f9ff",
+                        "surface-container": "#e6eeff",
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "sm": "12px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-[60] px-4 pt-4">
+<div class="glass-high-gloss flex items-center justify-between px-margin-mobile py-3 rounded-2xl max-w-7xl mx-auto border border-white/50">
+<div class="flex items-center gap-sm">
+<div class="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa4mR-j0jQ8qnkMbyOK-6vm5rRd_Mt8gCqOd7eRpXomGxsgg_rwjAg1GJ-TG2K5guQm7TYVuQqOhrBoRyZNlcMe_ERv0JjiVzwaS0qr0vPnqjl4v9ayALCLP8I6qiTnFqUmxLqqEWNVvvS4nOlAzRpw19xkaU_iJUog6QJAGRlCeY2BOO_k47GzgmzqPHXJtgwsX5bI-g6EBweAuMSHFTKWnAvOwLlf5NIFTVNUKd5x2iMm8qrt4-XiQ"/>
+</div>
+<span class="text-xl font-bold tracking-tight text-on-surface">Hola, <span class="text-primary">Propela</span></span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/40 hover:bg-white/60 transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content: Map Container -->
+<main class="relative h-screen w-full overflow-hidden">
+<div class="absolute inset-0 z-0 map-silver">
+<div class="w-full h-full bg-surface-container-low" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsRQ8OwuDV6JQTtuZ8GfmxqpafS8Zuolu4H22Vymn47UwfMaWfDcQZjtNvMvTsq7FcBlYzN5WWgcoB4SSEeYFlNKaHLYcn_Qzoa2cBMgl-6qfvEW-7BUwu6rmFc3ceJ4NXgINRreIPCswC-jmHtzFUAqO1EAHOkDE8VODfBVBWNBn1nCOeT3dwqrQuWaBvyIYXeYXdwURmn5B8QdkDbUF0uxqu56KI6T3_eWg52H37d_Rd4GwkCnK3LA'); background-size: cover;"></div>
+</div>
+<!-- Floating Category Chips -->
+<div class="absolute top-28 left-0 right-0 z-20 px-margin-mobile">
+<div class="flex gap-xs overflow-x-auto no-scrollbar pb-2">
+<button class="glass-high-gloss px-5 py-2.5 rounded-full flex items-center gap-2 whitespace-nowrap active:scale-95 transition-all text-primary font-semibold shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-sm">Electricians</span>
+</button>
+<button class="glass px-5 py-2.5 rounded-full flex items-center gap-2 whitespace-nowrap active:scale-95 transition-all text-on-surface/70 font-medium">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+<span class="text-sm">Plumbers</span>
+</button>
+<button class="glass px-5 py-2.5 rounded-full flex items-center gap-2 whitespace-nowrap active:scale-95 transition-all text-on-surface/70 font-medium">
+<span class="material-symbols-outlined text-[20px]">build</span>
+<span class="text-sm">Repairs</span>
+</button>
+</div>
+</div>
+<!-- Map Markers -->
+<div class="absolute inset-0 pointer-events-none">
+<!-- Popover Example -->
+<div class="absolute top-[35%] left-[50%] -translate-x-1/2 pointer-events-auto">
+<div class="flex flex-col items-center">
+<div class="glass-high-gloss p-3 rounded-2xl w-44 shadow-2xl border-white/60 animate-in fade-in zoom-in duration-300">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-xl overflow-hidden bg-surface-variant border border-white/40">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhvMGwfqj-kZ9GR6o10C2lle6mUEfmbc8QkjVM8YE2_Fwdr9zikcQJU_MCL4xZyx-NM8UisWC3q8Hab0r602brq8bhiSSTUlZtzNMeEI10D-MwGTw0g4X8Nl9BlJDuELB-8JQU2c0-KPrFjYsIW_yqAFevHsXd1Lg8QG1qL5JJggnCuUEZJZkqFJUYxSclR79GnzPrSOEmVx1DO8bsp2HFICpKkYH-unEneEirQ-jiiEqBofFcHy_pkw"/>
+</div>
+<div>
+<span class="font-bold text-on-surface text-sm block">Marco Ruiz</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[10px] font-bold">4.9</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-1.5 rounded-xl text-xs font-bold active:scale-95 transition-transform glow-orange shadow-lg">
+                            Contact
+                        </button>
+</div>
+<div class="w-3 h-3 bg-primary rotate-45 -mt-1.5 shadow-lg border border-white/20"></div>
+</div>
+</div>
+</div>
+<!-- Horizontal Carousel: Experts Nearby -->
+<section class="absolute bottom-[110px] left-0 right-0 z-30">
+<div class="px-margin-mobile mb-3 flex justify-between items-end">
+<h3 class="text-lg font-bold text-on-surface tracking-tight">Experts Nearby</h3>
+<span class="text-primary font-semibold text-sm">View all</span>
+</div>
+<div class="flex gap-md overflow-x-auto no-scrollbar px-margin-mobile pb-4 snap-x">
+<!-- Card 1 -->
+<div class="glass shrink-0 w-[260px] rounded-[24px] p-4 snap-start border-white/40 flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-12 h-12 rounded-2xl overflow-hidden border border-white shadow-sm">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiRJsCEAlt3jbTT2R-1yCsUeN3c79YIC0LrIonufeZVjN_Az4YCO0WokmK5lrwWtizX-LigSPPzwbtPvmXbZyYRb_HX-P1C9AdVhUEq4_uTymQDenBOCPX8IJ_LYaxOMeOikmXmNeBY_TGtYdtayvlL4U_uDxwKcmUVsVpcpsbutwBWgCQLbaSKFA3vAN5VYLyRfnIBPIAp0mG0_4YodKKq-4rgWUEfHl-VKbNDh3lc_K8E0R1GvDd3w"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary rounded-full p-0.5 border-2 border-white shadow-sm">
+<span class="material-symbols-outlined text-white text-[10px] block">check</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Carlos Mendoza</h4>
+<p class="text-[10px] text-secondary uppercase font-semibold tracking-wider">Plumbing</p>
+</div>
+</div>
+<div class="bg-primary/10 px-2 py-1 rounded-lg">
+<span class="text-primary font-bold text-xs">$25/hr</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1 border-t border-white/20">
+<div class="flex items-center gap-1 text-on-surface text-xs font-bold">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8</span>
+<span class="text-secondary font-medium">(89)</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass shrink-0 w-[260px] rounded-[24px] p-4 snap-start border-white/40 flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-12 h-12 rounded-2xl overflow-hidden border border-white shadow-sm">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkUVeU_z5V994MBsqk8SV8LpF_WRDiSOfk0Ku9HlT1gCt1q8bPDR2dVE-CRhp-V6kuKUiJgs_tFaMjJ2Pz9-aQVhm3mj03ciNqCp4ZE-N8k5JdOCtZEs4ztEfm1erHAozKjwML9ybAaovwz8wr3DzGPj7CWTIXrXVKGpL74qWKqcddmZ-aEAuZya3SS7dlWUeCZrNBGnvlZwx3fVvjmjrt_qmKWgXw-GtWwLGOXypiiyQ0dnIQL4GrFw"/>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Elena Sofia</h4>
+<p class="text-[10px] text-secondary uppercase font-semibold tracking-wider">Painting</p>
+</div>
+</div>
+<div class="bg-primary/10 px-2 py-1 rounded-lg">
+<span class="text-primary font-bold text-xs">$30/hr</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1 border-t border-white/20">
+<div class="flex items-center gap-1 text-on-surface text-xs font-bold">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>5.0</span>
+<span class="text-secondary font-medium">(42)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Diamond Crystal Bottom Navigation Bar -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-50">
+<div class="diamond-dock h-[76px] flex items-center justify-between px-6 shadow-2xl">
+<!-- Dock Decorative Facets -->
+<div class="facet w-16 h-full left-0 skew-x-[-20deg]"></div>
+<div class="facet w-16 h-full right-0 skew-x-[20deg]"></div>
+<div class="flex flex-1 justify-around items-center pr-4">
+<button class="flex flex-col items-center gap-0.5 text-white/60 hover:text-white transition-all">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Home</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-white transition-all">
+<span class="material-symbols-outlined text-[22px] text-primary" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter text-primary">Mapa</span>
+</button>
+</div>
+<!-- Glowing Gem Center -->
+<div class="relative -top-3">
+<div class="gem-center w-16 h-16 rounded-full flex items-center justify-center animate-pulse duration-[3000ms]">
+<span class="text-white text-2xl font-black italic tracking-tighter">P</span>
+</div>
+<!-- Refraction glints -->
+<div class="absolute top-1 left-4 w-2 h-1 bg-white/40 rounded-full blur-[1px]"></div>
+</div>
+<div class="flex flex-1 justify-around items-center pl-4">
+<button class="flex flex-col items-center gap-0.5 text-white/60 hover:text-white transition-all">
+<span class="material-symbols-outlined text-[22px]">construction</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Oficios</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-white/60 hover:text-white transition-all">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Perfil</span>
+</button>
+</div>
+</div>
+</nav>
+<script>
+        // Micro-interaction for expert cards
+        const cards = document.querySelectorAll('.snap-start');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(0.98) translateY(2px)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1) translateY(0)';
+                }, 150);
+            });
+        });
+    </script>
+</body></html>

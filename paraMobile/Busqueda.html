@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Propela - Service Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#5a4136",
+                        "inverse-primary": "#ffb693",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "primary": "#a04100",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-fixed": "#351000",
+                        "surface-container-highest": "#d9e3f6",
+                        "outline-variant": "#e2bfb0",
+                        "inverse-surface": "#27313f",
+                        "background": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "primary-container": "#ff6b00",
+                        "surface-variant": "#d9e3f6",
+                        "surface-container-high": "#dee9fc",
+                        "surface-dim": "#d0dbed",
+                        "on-secondary-fixed": "#121c2a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-error": "#ffffff",
+                        "on-surface": "#121c2a",
+                        "tertiary-fixed": "#d0e4ff",
+                        "on-tertiary-container": "#003357",
+                        "surface-container": "#e6eeff",
+                        "tertiary-container": "#059eff",
+                        "on-background": "#121c2a",
+                        "surface-tint": "#a04100",
+                        "surface": "#f8f9ff",
+                        "tertiary": "#0062a1",
+                        "outline": "#8e7164",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#555f70",
+                        "on-primary-container": "#572000",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#596374",
+                        "primary-fixed": "#ffdbcc",
+                        "secondary-container": "#d6e0f4",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#bdc7db",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "secondary-fixed": "#d9e3f7",
+                        "on-secondary-fixed-variant": "#3d4757",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "margin-mobile": "20px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "button-text": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "34px", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Cinematic Mesh Gradient Background */
+        .bg-mesh {
+            background-color: #f8f9ff;
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(24,100%,70%,0.2) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(210,100%,80%,0.25) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(200,100%,85%,0.2) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(24,100%,70%,0.15) 0px, transparent 50%);
+            animation: pulse-bg 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-bg {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Glass Panel Aesthetics */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+        
+        .glass-panel-faceted {
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            border-left: 1px solid rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 10px 40px -10px rgba(0,0,0,0.1);
+        }
+
+        .search-glass {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3), 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        /* Cinematic Hero Zoom */
+        .hero-zoom {
+            overflow: hidden;
+        }
+        
+        .hero-zoom img {
+            transition: transform 0.7s ease;
+        }
+        
+        .hero-zoom:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Pulsing Glow Button */
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px rgba(255, 107, 0, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 107, 0, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(255, 107, 0, 0.5); }
+        }
+
+        /* Scroll Reveal Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Category Card Overlay */
+        .category-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
+        }
+
+        /* Floating Shapes */
+        .floating-shape {
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-mesh min-h-screen text-on-surface font-body-md selection:bg-primary-container selection:text-white relative overflow-x-hidden">
+<!-- Decorative Floating Shapes -->
+<div class="fixed top-20 left-10 w-64 h-64 bg-white/40 rounded-full blur-3xl -z-10 floating-shape"></div>
+<div class="fixed bottom-40 right-10 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl -z-10 floating-shape" style="animation-delay: -5s;"></div>
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-tertiary-fixed/20 rounded-full blur-3xl -z-10 floating-shape" style="animation-delay: -2s;"></div>
+<!-- TopAppBar -->
+<header class="bg-transparent docked full-width top-0 z-40 relative pt-md pb-xs px-margin-mobile w-full max-w-7xl mx-auto flex flex-col gap-sm scroll-reveal visible">
+<div class="flex justify-between items-center w-full">
+<div class="flex items-center gap-xs">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-white/50 shadow-md">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of a young professional in a minimalist setting. Soft, natural light illuminates their face, casting gentle shadows. The background is a clean, bright light-mode aesthetic with very subtle geometric architectural elements out of focus. The mood is confident and welcoming." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWO_nw5pVBBiXAn9uTx71IIi2qwJcscNZZUSTjvEvPZowaEEJNbPvej9fPaoUkmyyEFZ5Y_TWVn5urR0l4Q18vyovJAAFRZvlqFXdU2XTPO6yZsVpvqJW_CoJjQGn0-NJmXvK1XlAUv29bqiIXtQyEIcmaLRZlj2TG655vLkC0kGBapxlAWG3W4F8tAQFyaaBB56QoVtbiUFnx2fDR32efK_EuWDT6QPJY8oqFnO_HjowWjfKlrMzodA"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-extrabold text-on-surface tracking-tight">Hola, Propela</h1>
+</div>
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-7xl mx-auto px-margin-mobile pt-lg pb-32 flex flex-col gap-xl">
+<!-- Search Section -->
+<section class="w-full scroll-reveal visible">
+<div class="search-glass w-full rounded-full h-14 flex items-center px-4 focus-within:ring-2 focus-within:ring-primary-container transition-all">
+<span class="material-symbols-outlined text-secondary mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-on-surface placeholder:text-secondary outline-none" placeholder="¿Qué servicio necesitas hoy?" type="text"/>
+</div>
+</section>
+<!-- Filter Chips -->
+<section class="w-full overflow-x-auto hide-scrollbar pb-2 scroll-reveal visible">
+<div class="flex gap-sm">
+<button class="glass-panel px-6 py-2 rounded-full font-label-lg text-label-lg font-bold whitespace-nowrap text-on-surface border border-primary-container bg-primary-container/10">Todos</button>
+<button class="glass-panel px-6 py-2 rounded-full font-label-lg text-label-lg font-semibold whitespace-nowrap text-secondary hover:bg-white/50 hover:text-on-surface transition-colors">Populares</button>
+<button class="glass-panel px-6 py-2 rounded-full font-label-lg text-label-lg font-semibold whitespace-nowrap text-secondary hover:bg-white/50 hover:text-on-surface transition-colors">Urgentes</button>
+<button class="glass-panel px-6 py-2 rounded-full font-label-lg text-label-lg font-semibold whitespace-nowrap text-secondary hover:bg-white/50 hover:text-on-surface transition-colors">Mantenimiento</button>
+</div>
+</section>
+<!-- Featured Section (Hero Card) -->
+<section class="w-full scroll-reveal">
+<h2 class="font-headline-md text-headline-md font-extrabold mb-md text-on-surface tracking-tight">Destacados</h2>
+<div class="hero-zoom rounded-3xl relative overflow-hidden group cursor-pointer shadow-2xl h-80">
+<img alt="Electrician at work" class="absolute inset-0 w-full h-full object-cover z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLn17ycO2GcwB_d9dyeh2itypUG1hsADjipgA3OCw7EzZ2jXoa1FmrFnZmW62dTrE85qqKNM68i3CqrDKABSc_AwEjtAaYabr5KDVzSZ4uumQpJWlyXbqab2o7IEcuikGNoQG5lYUrdxQUw-cJR8_oTjbJ1RPcj0fFwCBbUlicRgLxAgkhSQipyHSnOkC813BnH_rbF7KjKTroJXb6VwxRNgGHsisbvbMNNaGdNUmH20OfZpCMUDUkxA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+<div class="absolute inset-0 bg-primary-container/10 mix-blend-overlay z-10"></div>
+<div class="absolute bottom-0 left-0 p-6 z-20 w-full flex items-end justify-between">
+<div class="flex flex-col gap-xs max-w-[70%]">
+<span class="font-label-lg text-label-lg text-primary-fixed uppercase tracking-widest font-bold drop-shadow-md">Servicio Express</span>
+<h3 class="font-headline-lg text-headline-lg font-extrabold text-white leading-tight drop-shadow-lg">Reparación Eléctrica Urgente</h3>
+<p class="font-body-md text-gray-200 mt-1 drop-shadow-md">Solución experta en menos de 1 hora.</p>
+<button class="mt-4 bg-primary-container text-white w-fit px-8 py-3 rounded-full font-button-text font-bold hover:bg-primary transition-colors btn-glow">Reservar ahora</button>
+</div>
+<div class="w-16 h-16 rounded-full glass-panel-faceted flex items-center justify-center shadow-lg mb-2">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Vertical List -->
+<section class="w-full scroll-reveal">
+<h2 class="font-headline-md text-headline-md font-extrabold mb-md text-on-surface tracking-tight">Categorías</h2>
+<div class="flex flex-col gap-md">
+<!-- Category 1: Carpintería -->
+<div class="relative h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-lg hero-zoom scroll-reveal">
+<img alt="Carpentry work" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz_zJhuUyMmZR9HGsRVnSxSIOxmRG0UeTzm8sTGZUO93dUGYO5xWc-HhngaHyKLk5CpM0StxAH2mT9qLKRFFHM5N4sK-mXqbJAE8Y2lXfvzZGdp4CFxkURF17b1_r4rkXtYonSJ9g_WFcE_BQpABbFxW_2_Fze8Z0lBteYbqtrMRMBAkCkAUeVY6iZiW5BuKrHb-fVf0-hnNlhvXZC0GEPdoCcKX7iLDnr0wU4FCWoEAlz8ysbfsO18w"/>
+<div class="absolute inset-0 category-overlay"></div>
+<div class="absolute inset-0 flex items-center p-6">
+<div class="glass-panel-faceted rounded-xl p-4 flex items-center justify-center mr-6 border-white/40">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">carpenter</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-white">Carpintería</h3>
+<p class="font-body-md text-gray-300">Muebles y reparaciones</p>
+</div>
+</div>
+</div>
+<!-- Category 2: Electricidad -->
+<div class="relative h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-lg hero-zoom scroll-reveal">
+<img alt="Electrical work" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClTEtEkS83g-zU8uGvMsDLqrzfyU05DdQ0ESWlYjafbjevlcecID5xi3ZENU49cPYxgcxukAwtSfwqky3HjB3wzZ92jvLPqJ9osfXaFJfTBe1xkQXR3DzpmwzY4kVLADcXjadlzLkhpGC5zQmsvaLJVPMB4G6k8KVSBFaSOM5rSw8h9TCbFkop24UNaw_N3oh6h64W_MZrdGkUKean1x52npn47gN_QVxv2Qu_LtZXCgLQbf0XBDH-gQ"/>
+<div class="absolute inset-0 category-overlay"></div>
+<div class="absolute inset-0 flex items-center p-6">
+<div class="glass-panel-faceted rounded-xl p-4 flex items-center justify-center mr-6 border-white/40">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">electrical_services</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-white">Electricidad</h3>
+<p class="font-body-md text-gray-300">Instalaciones y arreglos</p>
+</div>
+</div>
+</div>
+<!-- Category 3: Plomería -->
+<div class="relative h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-lg hero-zoom scroll-reveal">
+<img alt="Plumbing work" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5E250XW2K_EQgiwIF51RC8caTk09bro2s51hUnnoqp55kgoalzOdSzVq6fnj8raHhfGNvCbXtZ4YN32AM0jnGzgexX381TVLzfh7jyWrMoohbvVX0zWqADFNuxuS8cnTtkfXCq2K57d_wdvtCngx-PMilMcUUGXpsNBbWkNCJhE5iqnQYUbYWlHw93pNolt9LoywizGqR_2Pzxm2_LWHD4PROd1yQ4PP742f27yuydHO6ZDwzQeU9Xw"/>
+<div class="absolute inset-0 category-overlay"></div>
+<div class="absolute inset-0 flex items-center p-6">
+<div class="glass-panel-faceted rounded-xl p-4 flex items-center justify-center mr-6 border-white/40">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">plumbing</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-white">Plomería</h3>
+<p class="font-body-md text-gray-300">Fugas y tuberías</p>
+</div>
+</div>
+</div>
+<!-- Category 4: Pintura -->
+<div class="relative h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-lg hero-zoom scroll-reveal">
+<img alt="Painting work" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDigtczjz8do-YqqaWBjfwocP2Hcxghzkj13o28szJLqjixH2RZT5Bx62GAcDT2eJTiIqPO0ZQoikBhAZWAOqODIQzRLPpJVIurYGzSduSMWyitaNFhw2OHCf3ZzTR0zI5CEPxDRTQN7HJNdY9Vx2dXx7_3Lp7v2s-qeVaaqEMc8kTevih3OUJLNoQ4OTG7sLdevSdzRjHVWsQ9b_xTqDDNhqywRcB72mWmo8AqhFrlBz1IOY2_1aa1LA"/> <!-- Placeholder image, ideally a painting one -->
+<div class="absolute inset-0 bg-gray-900/40 mix-blend-multiply"></div> <!-- Added tint for painting placeholder -->
+<div class="absolute inset-0 category-overlay"></div>
+<div class="absolute inset-0 flex items-center p-6">
+<div class="glass-panel-faceted rounded-xl p-4 flex items-center justify-center mr-6 border-white/40">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">format_paint</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-white">Pintura</h3>
+<p class="font-body-md text-gray-300">Interiores y exteriores</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe md:hidden shadow-[0px_-2px_15px_rgba(0,0,0,0.1)] glass-panel-faceted rounded-t-2xl border-t border-white/50">
+<a class="flex flex-col items-center justify-center text-primary-container font-bold hover:opacity-80 scale-95 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">house</span>
+<span class="font-label-lg text-label-lg mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:opacity-80 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+<span class="font-label-lg text-label-lg mt-1">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:opacity-80 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">work</span>
+<span class="font-label-lg text-label-lg mt-1">My Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:opacity-80 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-lg text-label-lg mt-1">Profile</span>
+</a>
+</nav>
+<script>
+    // Simple Scroll Reveal Animation Logic
+    document.addEventListener('DOMContentLoaded', () => {
+        const reveals = document.querySelectorAll('.scroll-reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+
+            reveals.forEach(reveal => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Trigger once on load
+        revealOnScroll();
+        
+        // Initial reveal for items at top
+        setTimeout(() => {
+             reveals.forEach(reveal => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < window.innerHeight) {
+                    reveal.classList.add('visible');
+                }
+            });
+        }, 100);
+    });
+</script>
+</body></html>

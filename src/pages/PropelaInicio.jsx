@@ -67,7 +67,7 @@ export default function PropelaInicio() {
         
        
         {/* Main Content Canvas con padding corregido */}
-        <main className="ml-64 px-10 py-8 min-h-screen">
+       <main className="md:ml-64 px-4 md:px-10 py-8 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-10">
             
             {/* Top Header Area */}

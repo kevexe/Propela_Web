@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProfilePopup from './ProfilePopup';
-import { useChat } from './ChatContext';
+import { useChat } from "../ChatContext";
 
 export default function Sidebar() {
   const navigate = useNavigate();

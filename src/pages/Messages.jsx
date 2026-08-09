@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useChat } from './ChatContext';
+import { useChat } from "../ChatContext";
 
 export default function Messages() {
   const { selectedContact } = useChat();

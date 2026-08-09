@@ -182,3 +182,35 @@
     border-right-color: var(--border);
   }
 }
+/* Fondo Animado Mesh Gradient para Propela */
+.bg-mesh {
+    background-color: #f8f9ff;
+    background-image: 
+        radial-gradient(at 40% 20%, hsla(24,100%,70%,0.2) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(210,100%,80%,0.25) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(200,100%,85%,0.2) 0px, transparent 50%),
+        radial-gradient(at 80% 100%, hsla(24,100%,70%,0.15) 0px, transparent 50%);
+    animation: pulse-bg 15s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-bg {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* Efectos Glassmorphism Reutilizables */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
